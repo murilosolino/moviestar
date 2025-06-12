@@ -31,6 +31,10 @@ class User
         $this->token = $token;
     }
 
+    public function getFullName(User $user)
+    {
+        return $user->getName() . " " . $user->getLastname();
+    }
 
     public function generateToken()
     {
