@@ -14,7 +14,7 @@ if (!empty($flassMessage["msg"])) {
 
 $userDao = new UserDAO($conn, $BASE_URL);
 
-$userData = $userDao->verifyToken(true);
+$userData = $userDao->verifyToken(false);
 
 ?>
 

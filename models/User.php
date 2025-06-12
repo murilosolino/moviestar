@@ -207,7 +207,7 @@ interface UserDAOInterface
 
     public function buildUser(array $data);
     public function create(User $user, bool $authUser = false);
-    public function update(User $user);
+    public function update(User $user, bool $redirect = true);
     public function verifyToken(bool $protected = false);
     public function setTokenSession(string $token, bool $redirect =  true);
     public function authUser(string $email, string $password);

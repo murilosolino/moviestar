@@ -64,7 +64,40 @@ class UserDAO implements UserDAOInterface
         }
     }
 
-    public function update(User $user) {}
+    public function update(User $user, $redirect = true)
+    {
+        $stmt = $this->conn->prepare("UPDATE users SET
+            name = :name,
+            lastname = :lastname,
+            email = :email,
+            image = :image,
+            bio = :bio,
+            token = :token 
+            WHERE id = :id
+        ");
+
+        $name = $user->getName();
+        $lastname = $user->getLastname();
+        $email = $user->getEmail();
+        $token = $user->getToken();
+        $image = $user->getImage();
+        $bio = $user->getBio();
+        $id = $user->getId();
+
+        $stmt->bindParam(":name", $name);
+        $stmt->bindParam(":lastname", $lastname);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":token", $token);
+        $stmt->bindParam(":image", $image);
+        $stmt->bindParam(":bio", $bio);
+        $stmt->bindParam(":id", $id);
+
+        $stmt->execute();
+
+        if ($redirect) {
+            $this->message->setMessage("Dados atualizados com sucesso!", "success", "editprofile.php");
+        }
+    }
 
     public function verifyToken(bool $protected = false)
     {
@@ -96,7 +129,25 @@ class UserDAO implements UserDAOInterface
         }
     }
 
-    public function authUser(string $email, string $password) {}
+    public function authUser($email, $password)
+    {
+        $user = $this->findByEmail($email);
+        if ($user) {
+            $passUser = $user->getPassword();
+            if (password_verify($password, $passUser)) {
+
+                $token = $user->generateToken();
+                $this->setTokenSession($token, false);
+                $user->setToken($token);
+                $this->update($user, false);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
     public function findByEmail(string $email)
     {
 

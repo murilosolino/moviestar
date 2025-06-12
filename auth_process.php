@@ -53,4 +53,17 @@ if ($type === "register") {
         $message->setMessage("Por favor preencha todos os campos", "error", "back");
     }
 } elseif ($type === "login") {
+
+    $email = filter_input(INPUT_POST, "email");
+    $password = filter_input(INPUT_POST, "password");
+
+    //Tenta Autenticar Usuario
+    if ($userDAO->authUser($email, $password)) {
+        $message->setMessage("Bem vindo", "success", "editprofile.php");
+    } else {
+        $message->setMessage("Usuário ou senha incorretos", "error", "back");
+    }
+} else {
+
+    $message->setMessage("Informações inválidas!", 'error', 'index.php');
 }
