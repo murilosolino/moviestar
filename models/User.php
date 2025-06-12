@@ -2,7 +2,7 @@
 class User
 {
 
-    private int $id;
+    private ?int $id;
     private string $name;
     private string $lastname;
     private string $email;
@@ -10,6 +10,26 @@ class User
     private string $image;
     private string $bio;
     private string $token;
+
+    public function __construct(
+        ?int $id = null,
+        string $name = "",
+        string $lastname = "",
+        string $email = "",
+        string $password = "",
+        string $image = "",
+        string $bio = "",
+        string $token = ""
+    ) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->lastname = $lastname;
+        $this->email = $email;
+        $this->password = $password;
+        $this->image = $image;
+        $this->bio = $bio;
+        $this->token = $token;
+    }
 
 
     public function generateToken()
@@ -194,4 +214,5 @@ interface UserDAOInterface
     public function findByEmail(string $email);
     public  function findById(int $id);
     public function findByToken(string $token);
+    public function destroyToken();
 }
