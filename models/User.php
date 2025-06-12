@@ -12,31 +12,15 @@ class User
     private string $token;
 
 
-    public function __construct(
-        int $id,
-        string $name,
-        string $lastname,
-        string $email,
-        string $password,
-        string $image,
-        string $bio,
-        string $token
-    ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->lastname = $lastname;
-        $this->email = $email;
-        $this->password = $password;
-        $this->image = $image;
-        $this->bio = $bio;
-        $this->token = $token;
+    public function generateToken()
+    {
+        return bin2hex(random_bytes(50));
     }
 
-
-
-
-
-
+    public function generetedPassword($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
+    }
     /**
      * Get the value of id
      */

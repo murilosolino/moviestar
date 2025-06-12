@@ -8,6 +8,7 @@ require_once("db.php");
 
 
 $message = new Message($BASE_URL);
+$userDAO = new UserDAO($conn, $BASE_URL);
 
 //Verifica o tipo do formulario;
 
@@ -23,7 +24,31 @@ if ($type === "register") {
     // verificacao de dados minimos
 
     if ($name && $lastname && $email && $password) {
-        # code...
+
+        if ($password === $confirmpassword) {
+
+            //verificar se o email ja esta cadastrado no sistema
+            if ($userDAO->findByEmail($email) === false) {
+                $user = new User();
+                $userToken = $user->generateToken();
+                $finalPassword = $user->generetedPassword($password);
+
+                $user->setName($name);
+                $user->setLastname($lastname);
+                $user->setEmail($email);
+                $user->setToken($userToken);
+                $user->setPassword($finalPassword);
+
+                $authUser = true;
+
+                $userDAO->create($user, $authUser);
+            } else {
+
+                $message->setMessage("Já esxiste um registro com esse email", "error", "back");
+            }
+        } else {
+            $message->setMessage("Senhas não são iguias", "error", "back");
+        }
     } else {
         $message->setMessage("Por favor preencha todos os campos", "error", "back");
     }

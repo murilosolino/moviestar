@@ -35,7 +35,28 @@ class UserDAO implements UserDAOInterface
     public function verifyToken(bool $protected = false) {}
     public function setTokenSession(string $token, bool $redirect =  true) {}
     public function authUser(string $email, string $password) {}
-    public function findByEmail(string $email) {}
+    public function findByEmail(string $email)
+    {
+
+        if (!empty($email)) {
+
+            $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :email");
+            $stmt->bindParam(":email", $email);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+
+                $data = $stmt->fetch();
+                $user = $this->buildUser($data);
+
+                return  $user;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
     public  function findById(int $id) {}
     public function findByToken(string $token) {}
 }
