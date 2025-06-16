@@ -57,11 +57,11 @@ if ($userData->getImage() == "") {
                 <form action="<?= $BASE_URL ?>user_process.php" method="post">
                     <input type="hidden" name="type" value="changepassword">
                     <div class="form-group">
-                        <label for="password">E-mail</label>
+                        <label for="password">Senha</label>
                         <input type="password" class="form-control" name="password" id="password" placeholder="digite sua nova senha">
                     </div>
                     <div class="form-group">
-                        <label for="password">E-mail</label>
+                        <label for="password">Senha</label>
                         <input type="password" class="form-control" name="confirmpassword" id="confirmpassword" placeholder="Confirme sua nova senha">
                     </div>
                     <input type="submit" class="btn card-btn" value="Alterar Senha">

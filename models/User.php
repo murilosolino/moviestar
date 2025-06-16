@@ -31,6 +31,11 @@ class User
         $this->token = $token;
     }
 
+    public function imageGeneretaName()
+    {
+        return bin2hex(random_bytes(50)) . "jpg";
+    }
+
     public function getFullName(User $user)
     {
         return $user->getName() . " " . $user->getLastname();
