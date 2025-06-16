@@ -13,6 +13,7 @@ $userDAO = new UserDAO($conn, $BASE_URL);
 $type = filter_input(INPUT_POST, "type");
 
 
+
 if ($type === "update") {
 
     $userData = $userDAO->verifyToken();
@@ -55,6 +56,26 @@ if ($type === "update") {
 
     $userDAO->update($userData);
 } elseif ($type == "changepassword") {
+
+    $password =  filter_input(INPUT_POST, "password");
+    $confirmpassword = filter_input(INPUT_POST, "confirmpassword");
+
+    $userData = $userDAO->verifyToken();
+
+    $id = $userData->getId();
+
+    if ($password === $confirmpassword) {
+
+        $user = new User();
+
+        $finalPassword = $user->generetedPassword($password);
+        $user->setPassword($finalPassword);
+        $user->setId($id);
+
+        $userDAO->changePassword($user);
+    } else {
+        $message->setMessage("As senhas nao sao iguais", "error", "back");
+    }
 } else {
     $message->setMessage("Informacoes invalidas", "error", "index.php");
 }
