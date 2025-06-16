@@ -38,7 +38,33 @@ class MovieDAO implements MovieDaoInterface
     public function getMoviesByUserID($id) {}
     public function findByID($id) {}
     public function findByTitle($title) {}
-    public function create(Movie $movie) {}
+    public function create(Movie $movie)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO movies (
+        title, description, image, trailer, category, length, user_id
+        ) VALUES (
+            :title, :description, :image, :trailer, :category, :length, :user_id
+        )");
+
+        $title = $movie->getTitle();
+        $description = $movie->getDescription();
+        $image = $movie->getImage();
+        $trailer = $movie->getTrailer();
+        $category = $movie->getCategory();
+        $length = $movie->getLength();
+        $user_id = $movie->getUser_id();
+
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':image', $image);
+        $stmt->bindParam(':trailer', $trailer);
+        $stmt->bindParam(':category', $category);
+        $stmt->bindParam(':length', $length);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+
+        $this->message->setMessage("Filme adicionado com sucesso!", "success", "index.php");
+    }
     public function update(Movie $movie) {}
     public function destroy($id) {}
 }
